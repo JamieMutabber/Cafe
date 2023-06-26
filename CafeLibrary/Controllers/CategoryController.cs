@@ -45,7 +45,7 @@ namespace CafeLibrary.Controllers
         {
             if (id == null || id == 0)
             {
-                return NotFound();
+                return NotFound(); 
             }
 
             Category? category = _context.Categories.Find(id);
