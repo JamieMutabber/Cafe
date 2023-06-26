@@ -107,6 +107,5 @@ namespace CafeLibrary.Controllers
             //return back to the index view
             return RedirectToAction("Index");
         }
-
     }
 }

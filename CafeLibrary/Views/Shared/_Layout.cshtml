@@ -5,10 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]  CafeLibrary</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    
     <link rel="stylesheet" href="~/CafeLibrary.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="// cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"/>
+    <link rel="stylesheet" href="// cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <style>
         a:hover {
             cursor: pointer
@@ -41,13 +42,24 @@
         </main>
     </div>
 
-    <footer class="border-top footer bg-primary text-light">
+    <footer class="border-top footer bg-primary text-light justify-content-around">
         <div class="container">
-            &copy; 2023 - CafeLibrary -
-            Made with <i class="bi bi-microsoft"></i> .NET 
+            CafeLibrary &copy; 2023
 
+
+
+            <div class="float-end">
+                <a asp-controller="Home" asp-action="Privacy">
+                    Privacy
+                    <i class="bi bi-shield-fill-exclamation"></i>
+                </a>
+            </div>
         </div>
+
     </footer>
+
+
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
