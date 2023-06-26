@@ -1,9 +1,6 @@
 ﻿@model IEnumerable<Category>;
 
-@if (TempData["success"] != null)
-{
-    <h2>@TempData["success"]</h2>
-}
+<Partial name="_Notification" />
 
 <div class="row pt-4">
 
