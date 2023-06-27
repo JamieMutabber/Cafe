@@ -1,4 +1,4 @@
-using CafeLibrary.Data;
+using CafeLibrary.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +10,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 //add connection string
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{ 
+{
     options.UseSqlServer(connectionString);
 });
 

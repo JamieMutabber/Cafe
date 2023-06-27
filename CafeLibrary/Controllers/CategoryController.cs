@@ -1,7 +1,6 @@
-﻿using CafeLibrary.Data;
+﻿using CafeLibrary.DataAccess.Data;
 using CafeLibrary.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc;  
 
 namespace CafeLibrary.Controllers
 {

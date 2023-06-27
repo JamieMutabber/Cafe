@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CafeLibrary.Models
 {
-    public class Category
+    public class Category   
     {
-        [Key]
+        [Key] 
         public int Id { get; set; }
         [Required]
         [DisplayName("Category Name")]

@@ -1,7 +1,7 @@
 ﻿using CafeLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CafeLibrary.Data
+namespace CafeLibrary.DataAccess.Data
 {
     public class ApplicationDbContext : DbContext
     {
