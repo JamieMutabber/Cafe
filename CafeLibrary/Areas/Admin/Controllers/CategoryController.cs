@@ -1,19 +1,20 @@
-﻿using CafeLibrary.DataAccess.Data;
+﻿using CafeLibrary.DataAccess.Repository.IRepository;
 using CafeLibrary.Models;
-using Microsoft.AspNetCore.Mvc;  
+using Microsoft.AspNetCore.Mvc;
 
-namespace CafeLibrary.Controllers
+namespace CafeLibrary.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        public CategoryController(ApplicationDbContext context)
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            IEnumerable<Category> categoriesList = _context.Categories.ToList();
+            IEnumerable<Category> categoriesList = _unitOfWork.CategoryRepository.GetAll().ToList();
 
             return View(categoriesList);
         }
@@ -32,8 +33,8 @@ namespace CafeLibrary.Controllers
 
             if (ModelState.IsValid)
             {
-                _context.Categories.Add(category);
-                _context.SaveChanges();
+                _unitOfWork.CategoryRepository.Add(category);
+                _unitOfWork.Save();
                 TempData["success"] = "Category Created Successfully";
                 return RedirectToAction("Index");
             }
@@ -44,10 +45,10 @@ namespace CafeLibrary.Controllers
         {
             if (id == null || id == 0)
             {
-                return NotFound(); 
+                return NotFound();
             }
 
-            Category? category = _context.Categories.Find(id);
+            Category? category = _unitOfWork.CategoryRepository.Get(u => u.Id == id);
 
             if (category is null)
             {
@@ -59,11 +60,11 @@ namespace CafeLibrary.Controllers
         [HttpPost]
         public IActionResult Edit(Category category) //EDIT category by Categories model
         {
-           
+
             if (ModelState.IsValid)
             {
-                _context.Categories.Update(category);
-                _context.SaveChanges();
+                _unitOfWork.CategoryRepository.Update(category);
+                _unitOfWork.Save();
                 TempData["success"] = "Category Edited Successfully";
                 return RedirectToAction("Index");
             }
@@ -77,7 +78,7 @@ namespace CafeLibrary.Controllers
                 return NotFound();
             }
 
-            Category? category = _context.Categories.Find(id);
+            Category? category = _unitOfWork.CategoryRepository.Get(u => u.Id == id);
 
             if (category is null)
             {
@@ -87,9 +88,9 @@ namespace CafeLibrary.Controllers
             return View(category);
         }
         [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePOST(int?id) //deleting by ID
+        public IActionResult DeletePOST(int? id) //deleting by ID
         {
-            Category? category = _context.Categories.Find(id); //finding the data by ID first
+            Category? category = _unitOfWork.CategoryRepository.Get(u => u.Id == id); //finding the data by ID first
 
             if (category is null)
             {
@@ -97,10 +98,10 @@ namespace CafeLibrary.Controllers
             }
 
             //else remove the data found by ID
-            _context.Categories.Remove(category);
+            _unitOfWork.CategoryRepository.Remove(category);
 
             //savechanges to the database
-            _context.SaveChanges();
+            _unitOfWork.Save();
             TempData["success"] = "Category Deleted Successfully";
 
             //return back to the index view
