@@ -1,47 +1,53 @@
-﻿@model IEnumerable<Category>;
+﻿@model IEnumerable<Product>;
 
 <div class="row pt-4">
 
     <div class="col-6">
-        <h1 class="text-success-emphasis">Book Categories <i class="bi bi-book"></i></h1>
+        <h1 class="text-success-emphasis">Books <i class="bi bi-book"></i></h1>
     </div>
-    
+
     <div class="col-6 text-end">
-        <a asp-controller="Category" asp-action="Create"
+        <a asp-controller="Product" asp-action="Create"
            class="btn btn-outline-success">
-            Create Categories &nbsp; <i class="bi bi-plus-circle"></i>
+            Add Books &nbsp; <i class="bi bi-plus-circle"></i>
         </a>
     </div>
- 
+
 
     <table class="table table-bordered table-striped table hover">
 
         <thead>
 
             <tr class="fs-4 text-center">
-                <th>Category Name</th>
-                <th>Display Order</th>
+                <th>Title</th>
+                <th>ISBN</th>
+                <th>Price</th>
+                <th>Author</th>
+                <th>Category</th>
                 <th>Actions</th>
             </tr>
 
         </thead>
 
-        <tbody>
+        <tbody class="text-center">
 
             @foreach (var data in Model)
             {
-                <tr class="text-center">
-                    <td>@data.Name</td>
-                    <td>@data.DisplayOrder</td>
-                    <td class="text-center">
+                <tr class="">
+                    <td>@data.Title</td>
+                    <td>@data.ISBN</td>
+                    <td>@data.ListPrice</td>
+                    <td>@data.Author</td>
+                    <td></td>
+                    <td>
                         <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Category"
+                            <a asp-controller="Product"
                                asp-action="Edit"
                                asp-route-id="@data.Id"
                                class="btn btn-outline-warning mx-2">
                                 Edit <i class="bi bi-pencil-square"></i>
                             </a>
-                            <a asp-controller="Category"
+                            <a asp-controller="Product"
                                asp-action="Delete"
                                asp-route-id="@data.Id"
                                class="btn btn-outline-danger mx-2">

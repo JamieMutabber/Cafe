@@ -1,10 +1,12 @@
 ﻿using CafeLibrary.DataAccess.Repository.IRepository;
 using CafeLibrary.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections;
 
 namespace CafeLibrary.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("Admin")] 
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -20,7 +22,8 @@ namespace CafeLibrary.Areas.Admin.Controllers
         }
 
         public IActionResult Create()
-        {
+        {           
+
             return View();
         }
         [HttpPost]
