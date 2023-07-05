@@ -21,7 +21,7 @@ namespace CafeLibrary.Areas.Admin.Controllers
             return View(productsList);
         }
 
-        public IActionResult Create()
+        public IActionResult Upsert(int? id)
         {
             ProductVM productVM = new()
             {
@@ -34,10 +34,20 @@ namespace CafeLibrary.Areas.Admin.Controllers
                 Product = new Product()
             };
 
-            return View(productVM);
+            if(id == null || id == 0)
+            {
+                //create
+                return View(productVM);
+            }
+            else
+            {
+                //update
+                productVM.Product = _unitOfWork.ProductRepository.Get(u => u.Id == id);
+                return View(productVM);
+            }
         }
         [HttpPost]
-        public IActionResult Create(ProductVM obj)
+        public IActionResult Upsert(ProductVM obj, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
@@ -59,36 +69,7 @@ namespace CafeLibrary.Areas.Admin.Controllers
                 return View(obj);
             }
         }
-        public IActionResult Edit(int? id) // fing category data by ID
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-
-            Product? product = _unitOfWork.ProductRepository.Get(u => u.Id == id);
-
-            if (product is null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
-        }
-        [HttpPost]
-        public IActionResult Edit(Product product) //EDIT category by Categories model
-        {
-
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.ProductRepository.Update(product);
-                _unitOfWork.Save();
-                TempData["success"] = "Product Edited Successfully";
-                return RedirectToAction("Index");
-            }
-
-            return View();
-        }
+        
         public IActionResult Delete(int? id) //GET delete data by ID
         {
             if (id == null || id == 0)

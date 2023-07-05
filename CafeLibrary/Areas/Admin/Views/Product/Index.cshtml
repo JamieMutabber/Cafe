@@ -7,7 +7,7 @@
     </div>
 
     <div class="col-6 text-end">
-        <a asp-controller="Product" asp-action="Create"
+        <a asp-controller="Product" asp-action="Upsert"
            class="btn btn-outline-success">
             Add Books &nbsp; <i class="bi bi-plus-circle"></i>
         </a>
@@ -42,7 +42,7 @@
                     <td>
                         <div class="w-75 btn-group" role="group">
                             <a asp-controller="Product"
-                               asp-action="Edit"
+                               asp-action="Upsert"
                                asp-route-id="@data.Id"
                                class="btn btn-outline-warning mx-2">
                                 Edit <i class="bi bi-pencil-square"></i>
