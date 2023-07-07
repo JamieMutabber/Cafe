@@ -10,13 +10,15 @@ namespace CafeLibrary.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment; // Access to wwwroot folder
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
-            IEnumerable<Product> productsList = _unitOfWork.ProductRepository.GetAll().ToList();
+            IEnumerable<Product> productsList = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category").ToList();
 
             return View(productsList);
         }
@@ -34,7 +36,7 @@ namespace CafeLibrary.Areas.Admin.Controllers
                 Product = new Product()
             };
 
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 //create
                 return View(productVM);
@@ -51,7 +53,48 @@ namespace CafeLibrary.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.ProductRepository.Add(obj.Product);
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+                if (file != null)
+                {
+                    string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(wwwRootPath, @"images\product");
+
+                    //updating image by removing prebious one and adding new one
+                    if (!string.IsNullOrEmpty(obj.Product.ImageUrl))
+                    {
+                        //deleting the old image
+                        var oldImagePath =
+                            Path.Combine(wwwRootPath, obj.Product.ImageUrl.TrimStart('\\'));
+
+                        //if old image exists on the image path
+
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            //then delete the old image from the path
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+
+                    //add new image to the path and save it
+
+                    using (var fileStream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+
+                    obj.Product.ImageUrl = @"\images\product\" + fileName;
+                }
+
+                if (obj.Product.Id == 0)
+                {
+                    _unitOfWork.ProductRepository.Add(obj.Product);
+                }
+                else
+                {
+                    _unitOfWork.ProductRepository.Update(obj.Product);
+                }
+
                 _unitOfWork.Save();
                 TempData["success"] = "Product Created Successfully";
                 return RedirectToAction("Index");
@@ -69,7 +112,7 @@ namespace CafeLibrary.Areas.Admin.Controllers
                 return View(obj);
             }
         }
-        
+
         public IActionResult Delete(int? id) //GET delete data by ID
         {
             if (id == null || id == 0)
